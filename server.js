@@ -23,10 +23,9 @@ app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
-var port = config.APP_PORT | 4000
-app.listen(port)
 
-console.log('App listening on port ' + port)
+
+
 
 var todoRoutes = require('./app/routes.js')
 
@@ -50,3 +49,5 @@ app.use(function (req, res, next) {
 app.get('/', function (req, res, next) {
     res.sendfile('./public/index.html')
   })
+
+  module.exports = app;

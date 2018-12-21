@@ -5,7 +5,8 @@
     "main": "server.js",
     "author": "Joonas Ryynänen",
     "scripts": {
-        "build": "webpack"
+        "build": "webpack",
+        "test": "jest --verbose --runInBand --detectOpenHandles"
     },
     "dependencies": {
         "body-parser": "^1.5.2",
@@ -16,7 +17,8 @@
         "bootstrap": "^4.0.0-beta.2",
         "axios": "^0.18.0",
         "vue": "^2.5.11",
-        "vue-axios": "^2.0.2"
+        "vue-axios": "^2.0.2",
+        "jest": "^23.6.0"
     },
     "devDependencies": {
         "@babel/core": "^7.1.6",
@@ -32,6 +34,11 @@
         "vue-template-compiler": "^2.4.4",
         "webpack": "^4.25.1",
         "webpack-cli": "^3.1.2",
-        "webpack-dev-server": "^3.1.10"
+        "webpack-dev-server": "^3.1.10",
+        "superagent": "^4.0.0",
+        "supertest": "^3.3.0",
+        "bluebird": "^3.5.3",
+        "axios": "^0.18.0",
+        "babel-cli": "^6.26.0"
     }
 }
