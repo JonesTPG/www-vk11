@@ -22,9 +22,21 @@ describe('Testataan MongoDB-yhteys', () => {    //testataan mongoose-yhteys
   });
 
 
-describe('Testataan kirjautumissivu', () => {   
+describe('Testataan serverin root', () => {   
     test('Get-request rootiin', (done) => {
       request(app).get('/').set('Accept', 'text/html')
+      .expect(200)
+      .then(response => {
+        
+        done();
+      });
+    });
+    
+  });
+
+  describe('Testataan api/all', () => {   
+    test('Get-request rootiin', (done) => {
+      request(app).get('/').set('Accept', 'application/json')
       .expect(200)
       .then(response => {
         
