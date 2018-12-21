@@ -35,7 +35,7 @@ describe('Testataan serverin root', () => {
   });
 
   describe('Testataan api/all', () => {   
-    test('Get-request rootiin', (done) => {
+    test('Get-request api/all', (done) => {
       request(app).get('/').set('Accept', 'application/json')
       .expect(200)
       .then(response => {
