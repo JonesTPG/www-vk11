@@ -1,53 +1,88 @@
-'use strict'
+#!/usr/bin/env node
 
-var express = require('express')
-var morgan = require('morgan')
-var path = require('path')
-var app = express()
-var mongoose = require('mongoose')
-var bodyParser = require('body-parser')
+//normaali serveri-tiedosto
 
-var config = require('./app/config.js')
+var app = require('./app');
+var debug = require('debug')('ht:server');
+var http = require('http');
 
-var db = mongoose.connect(config.DB, function(error){
-    if(error) console.log(error);
+/**
+ * Get port from environment and store in Express.
+ */
 
-        console.log("connection successful");
-});
+var port = normalizePort(process.env.PORT || '4000');
+app.set('port', port);
 
+/**
+ * Create HTTP server.
+ */
 
+var server = http.createServer(app);
 
-app.use(express.static(path.join(__dirname, '/public')))
+/**
+ * Listen on provided port, on all network interfaces.
+ */
 
-app.use(morgan('dev'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
+/**
+ * Normalize a port into a number, string, or false.
+ */
 
+function normalizePort(val) {
+  var port = parseInt(val, 10);
 
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
 
+  if (port >= 0) {
+    // port number
+    return port;
+  }
 
-var todoRoutes = require('./app/routes.js')
+  return false;
+}
 
-app.use('/api', todoRoutes)
+/**
+ * Event listener for HTTP server "error" event.
+ */
 
-app.use(function (req, res, next) {
-    // Website you wish to allow to connect
-  //res.setHeader('Access-Control-Allow-Origin', 'http://localhost:' + port)
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
 
-    // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
 
-    // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
 
-    // Pass to next layer of middleware
-  next()
-})
+/**
+ * Event listener for HTTP server "listening" event.
+ */
 
-// Server index.html page when request to the root is made
-app.get('/', function (req, res, next) {
-    res.sendfile('./public/index.html')
-  })
-
-  module.exports = app;
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
